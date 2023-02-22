@@ -94,7 +94,7 @@ __interrupt void Port_2(void)
         LED_Color = 0;  // LED changes to green
         // @TODO Add code to change which edge the interrupt should be looking for next
         P1OUT &= ~BIT0; // Turn off current blinking LED before changing
-        P2IES &= ~BIT3; // Toggle edge direction of interrupt
+        P2IES &= ~BIT3; // Change edge direction of interrupt
     }
 
     //if IRQ sens is L to H
@@ -103,7 +103,7 @@ __interrupt void Port_2(void)
         LED_Color = 1;  // LED changes to red
         // @TODO Add code to change which edge the interrupt should be looking for next
         P6OUT &= ~BIT6; // Turn off current blinking LED before changing
-        P2IES |= BIT3; // Toggle edge direction of interrupt
+        P2IES |= BIT3; // Change edge direction of interrupt
     }
 }
 
