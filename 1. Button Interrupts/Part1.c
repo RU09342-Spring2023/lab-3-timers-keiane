@@ -7,6 +7,14 @@
  *  This code is a template which will change the color of the LED being blinked using the interrupt routine.
  */
 
+/*
+ * Editor: Keiane Balicanta
+ * Course (Section): Embedded Systems (Section 3)
+ * Assignment: Lab 3 - Part 1
+ * Date: 22 FEB 2023
+ * Version: 1.0
+ * Description: This is part 1 of the lab 3 changes a blinking LED based on an ISR button press.
+ */
 
 #include <msp430.h>
 
@@ -66,7 +74,7 @@ void gpioInit(){
       // Configure Button on P2.3 as input with pullup resistor
       P2OUT |= BIT3;                          // Configure P2.3 as pulled-up
       P2REN |= BIT3;                          // P2.3 pull-up register enable
-      P2IES &= ~BIT3;                         // P2.3 Low --> High edge
+      P2IES |= BIT3;                         // P2.3 High --> Low edge
       P2IE |= BIT3;                           // P2.3 interrupt enabled
 
 }
@@ -80,16 +88,35 @@ __interrupt void Port_2(void)
 {
     P2IFG &= ~BIT3;                         // Clear P1.3 IFG
 
-    if ( )       // @TODO Fill in this argument within the If statement to check if the interrupt was triggered off a rising edge.
+    //if IRQ sens is H to L
+    if (P2IES |= BIT3)       // @TODO Fill in this argument within the If statement to check if the interrupt was triggered off a rising edge.
     {
-        LED_Color = 0;
+        LED_Color = 0;  // LED changes to green
         // @TODO Add code to change which edge the interrupt should be looking for next
+        P1OUT &= ~BIT0; // Turn off current blinking LED before changing
+        P2IES ^= BIT3; // Toggle edge direction of interrupt
     }
 
-    else if ( ) // @TODO Fill in this argument within the If statement to check if the interrupt was triggered off a falling edge.
+    //if IRQ sens is L to H
+    else if (P2IES &= ~BIT3) // @TODO Fill in this argument within the If statement to check if the interrupt was triggered off a falling edge.
     {
-        LED_Color = 1;
+        LED_Color = 1;  // LED changes to red
         // @TODO Add code to change which edge the interrupt should be looking for next
+        P6OUT &= ~BIT6; // Turn off current blinking LED before changing
+        P2IES ^= BIT3; // Toggle edge direction of interrupt
     }
 }
+
+/*
+ * PSEUDO
+ *
+ * if(IRQ H - L){
+ *      LED toggle set to 0 (change to green in main() condition)
+ *      change IRQ L - H
+ * }
+ * else if (IRQ L - H){
+ *      LED toggle set to 1 (change to red in main() condition)
+ *      change IRQ
+ * }
+ */
 
