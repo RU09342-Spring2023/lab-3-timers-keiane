@@ -52,9 +52,9 @@ void gpioInit(){
 
 void timerInit(){
     // @TODO Initialize Timer B1 in Continuous Mode using ACLK as the source CLK with Interrupts turned on
-        TB1CCTL0 = CCIE;                          // TBCCR0 interrupt enabled
-        TB1CCR0 = 50000;
-        TB1CTL = TBSSEL_1 | MC_2;                 // ACLK, continuous mode
+    TB1CTL = TBSSEL_1 | MC_1;      // SMCLK, continuous mode, clear TBR, enable interrupt
+    TB1CCTL0 |= CCIE;                             // Enable TB1 CCR0 Interrupt
+    TB1CCR0 = 50000;                          // Set CCR1 to the value to set the duty cycle
 }
 
 
@@ -70,11 +70,17 @@ __interrupt void Port_2(void)
         P2IFG &= ~BIT3;
 
     // @TODO When the button is pressed, you can change what the CCR0 Register is for the Timer. You will need to track what speed you should be flashing at.
+        // Mode 1 is 50000 counts
+        // Mode 2 is 35000 counts
+        // Mode 3 is 20000 counts
+        // Reset to 50000
         if (P2IES & BIT3){
-
-        }
-        else if (!(P2IES & BIT3)){
-
+            if(TB1CCR0 <= 20000){
+                TB1CCR0 = 50000;
+            }
+            else {
+                TB1CCR0 -= 15000;
+            }
         }
 }
 
@@ -84,8 +90,7 @@ __interrupt void Port_2(void)
 __interrupt void Timer1_B0_ISR(void)
 {
     // @TODO You can toggle the LED Pin in this routine and if adjust your count in CCR0.
-        P1OUT ^= BIT0;
-
+        P6OUT ^= BIT6;
 }
 
 
