@@ -52,7 +52,7 @@ void gpioInit(){
 
 void timerInit(){
     // @TODO Initialize Timer B1 in Continuous Mode using ACLK as the source CLK with Interrupts turned on
-    TB1CTL = TBSSEL_1 | MC_1;      // SMCLK, continuous mode, clear TBR, enable interrupt
+    TB1CTL = TBSSEL_1 | MC_1;      // ACLK, continuous mode
     TB1CCTL0 |= CCIE;                             // Enable TB1 CCR0 Interrupt
     TB1CCR0 = 50000;                          // Set CCR1 to the value to set the duty cycle
 }

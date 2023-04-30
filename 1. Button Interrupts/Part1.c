@@ -88,6 +88,7 @@ __interrupt void Port_2(void)
 {
     P2IFG &= ~BIT3;                         // Clear P1.3 IFG
 
+
     //if IRQ sens is H to L
     if (P2IES & BIT3)       // @TODO Fill in this argument within the If statement to check if the interrupt was triggered off a rising edge.
     {
